@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,13 +54,19 @@ public class FlightController {
 	public SearchFlightOutput searchFlights(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate, @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate, 
 											@RequestParam String fromCity, @RequestParam String toCity, @RequestParam FlightClass flightClass, @RequestParam int numOfSeats,
 											@RequestParam(required = false, defaultValue = "false") boolean onlyOnward) {
+		
+		System.out.println("Name from security context =====> " + SecurityContextHolder.getContext().getAuthentication().getName());
+		
 		return flightService.searchFlights(startDate, fromCity, endDate, toCity, flightClass, numOfSeats, onlyOnward);
 	}
 	
 	@RequestMapping(value = "/booking", method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public FlightBookingOutput createBooking(@RequestBody FlightBookingInput flightBookingInput) {
-		flightValidator.validateForCreateBooking(flightBookingInput);
+//		flightValidator.validateForCreateBooking(flightBookingInput);
+		flightBookingInput.setEmail("mithun.gooty@gmail.com");
+		flightBookingInput.setName("mithun");
+		flightBookingInput.setMobileNum("1234567890");
 		return flightService.createBooking(flightBookingInput);
 	}
 	

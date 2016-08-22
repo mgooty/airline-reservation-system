@@ -15,6 +15,10 @@ public enum AirlineError {
 	
 	FLIGHT_CHECKIN_SEAT_NOT_AVAILABLE("FCE001", "Seat number %s is not available anymore"),
 	FLIGHT_CHECKIN_NOT_ALLOWED("FCE002", "You can check-in only %s Hrs within the departure time"),
+	
+	AUTHENTICATION_ERROR("AE001", "Invalid email and password combination"),
+	AUTHENTICATION_AUTH_TOKEN_MISSING("AE002", "X-AUTH-TOKEN header is mandatory"),
+	AUTHENTICATION_AUTH_TOKEN_EXPIRED("AE00", "X-AUTH-TOKEN header has expired")
 	;
 	
 	private final String code;

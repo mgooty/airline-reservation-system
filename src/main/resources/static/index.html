@@ -2,40 +2,172 @@
 
 
 <head>
- <meta charset="utf-8">
-<tile>Login</tile>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
- <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen,projection" />
- <link type="text/css" rel="stylesheet" href="app.css" media="screen,projection" />
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css" media="screen,projection" />
 
 </head>
 
-<body>
-
-<body>
-  <div class="wrapper">
-    <form class="form-signin">       
-      <h2 class="form-signin-heading">Please login</h2>
-      <div class="row">
-      <input type="text" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />
-      </div>
-      <div class="row">
-      <input type="password" class="form-control" name="password" placeholder="Password" required=""/>  
-      </div>  
+<body style="margin-left: 10px;margin-right: 10px;margin-top: 10px;">
+    <div id='searchpanel' class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Choose Journey</h3>
+        </div>
+        <div class="panel-body">
             <div class="row">
-  
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
-      </div>
-    </form>
-  </div>
-</body>
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">Start Date</span>
+                        <input type="date" class="form-control" id="fromdate" aria-describedby="basic-addon3">
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div class="input-group ">
+                        <span class="input-group-addon" id="basic-addon3">End Date</span>
+                        <input type="date" class="form-control" id="todate" aria-describedby="basic-addon3">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+
+                    <div class="form-group">
+                        <label for="fromcity">From City</label>
+                        <select class="form-control" id="fromcity">
+                        <option> Select City</option>
+                        <option>Bangalore</option>
+                        <option>Delhi</option>
+                        <option>Mumbai</option>
+                        <option>Chennai</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div class="form-group">
+                        <label for="tocity">To City</label>
+                        <select class="form-control" id="tocity">
+                        <option>Select City</option>
+                        <option>Bangalore</option>
+                        <option>Delhi</option>
+                        <option>Mumbai</option>
+                        <option>Chennai</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div class="form-group">
+                        <label for="trip-class">Class</label>
+                        <select class="form-control" id="trip-class">
+                        <option>ECONOMY</option>
+                        <option>BUSINESS</option>
+
+                    </select>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div>
+                        <label for="numseat">Number Of Seats</label>
+                        <input type="number" class="form-control" id="numseat" aria-describedby="basic-addon3">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+                    <div class="form-group">
+                        <label class="checkbox-inline"><input type="checkbox" id="returntrip">Both Onward & Return</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <center>
+
+                    <button class=" btn btn-default btn-lg" id="searchflights"> Search Flights </button>
+
+                </center>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+    <--  Search Results-->
+
+    <div id="searchresult" class="panel panel-default" hidden>
+
+        <div class="panel-heading">
+
+            <h5> Search Result</h5>
+
+        </div>
+
+        <div class="panel-body">
+            <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:20px">
+                <div id="on-detail">
+                    <h2>Onwards </h2>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:20px">
+                <div id="re-detail">
+                    <h2>Return </h2>
+
+                </div>
+            </div>
+            <center>
+
+                <button class=" btn btn-default btn-lg" id="proc-book"> Book </button>
+
+            </center>
+        </div>
+
+    </div>
+
+        <--  Booking-->
+ <div id="booking-details" class="panel panel-default" hidden>
+
+        <div class="panel-heading">
+
+            <h5> Provide Traveller details</h5>
+
+        </div>
+
+        <div class="panel-body">
+        
+        </div>
+<center>
+                <button class=" btn btn-default btn-lg" id="proceed-pay"> Proceed </button>
+            </center>
+    </div>
+
+
+
+    </div>
+
+
 </body>
 <script type="text/javascript" src="jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="moment.min.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
 
-
-
-
-
-</html>
+</html

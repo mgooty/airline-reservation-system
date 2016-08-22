@@ -47,7 +47,7 @@ public class PaymentTxn extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private PaymentStatus paymentStatus;
 
-	@Column(name = "status")
+	@Column(name = "total_amount")
 	private Double totalAmount;
 	
 	public Long getId() {

@@ -61,9 +61,9 @@ public class FlightServiceImpl implements FlightService {
 		
 		List<Flight> flights = null;
 		if(onlyOnwards) {
-			flights = flightRepository.searchOnwardsFlights(departureDate, fromCity, toCity, flightClass, numOfSeats);
+			flights = flightRepository.searchOnwardsFlights(departureDate, fromCity.toUpperCase(), toCity.toUpperCase(), flightClass, numOfSeats);
 		} else {
-			flights = flightRepository.searchFlights(departureDate, fromCity, returnDate, toCity, flightClass, numOfSeats);
+			flights = flightRepository.searchFlights(departureDate, fromCity.toUpperCase(), returnDate, toCity.toUpperCase(), flightClass, numOfSeats);
 		}
 		
 		SearchFlightOutput output = new SearchFlightOutput();
@@ -79,7 +79,7 @@ public class FlightServiceImpl implements FlightService {
 			flightOutputResource.setFlightClass(flight.getFlightClass());
 			flightOutputResource.setPricePerSeat(flight.getPricePerSeat());
 			
-			if(flight.getFromCity().equals(fromCity)) {
+			if(flight.getFromCity().equalsIgnoreCase(fromCity)) {
 				output.addOnwardFlight(flightOutputResource);
 			} else {
 				output.addReturnFlight(flightOutputResource);
