@@ -13,7 +13,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -26,7 +25,6 @@ import com.crossover.airline.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultJwtParser;
 
-@Component
 public class StatelessAuthenticationFilter extends GenericFilterBean {
 
 	@Value("${security.token.secret:asdfasdfasdf}")
@@ -36,11 +34,13 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
 	private UserRepository userRepository;
 	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
+							throws IOException, ServletException {
+		System.out.println("stateless authentication filter");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		try {
+//		try {
 			
 			String token = httpRequest.getHeader(Constants.X_AUTH_TOKEN_HEADER_NAME);
 			if(!StringUtils.hasText(token)) {
@@ -63,9 +63,9 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
 			User user = userRepository.findOne(jwtPayload.getEmail());
 			SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(user.getEmail()));
 			chain.doFilter(request, response);
-		} catch(Exception e) {
-			httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		}
+//		} catch(Exception e) {
+//			httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//		}
 	}
 
 }

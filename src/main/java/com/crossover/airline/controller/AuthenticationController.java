@@ -22,7 +22,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
-@RequestMapping("/auth")
+//@RequestMapping
 public class AuthenticationController {
 
 	@Autowired
@@ -37,7 +37,7 @@ public class AuthenticationController {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	@RequestMapping
+	@RequestMapping("/auth")
 	public void authenticateInternalUsers(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws Exception {
 		User user = userRepository.findByEmailAndPassword(email, password);
 		
