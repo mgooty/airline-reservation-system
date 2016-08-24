@@ -1,6 +1,8 @@
 package com.crossover.airline.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +20,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	@Autowired
+	private StatelessAuthenticationFilter statelessAuthenticationFilter;
+	
 	public SpringSecurityConfig() {
 		super(true);
 	}
@@ -31,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated().and()
 
 			// Custom Token based authentication based on the header
-			.addFilterBefore(new StatelessAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(statelessAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -49,11 +54,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/auth", "/static/**");
 	}
 	
-//	@Bean
-//    public FilterRegistrationBean filterRegistrationBean() {
-//        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-//        filterRegistrationBean.setEnabled(false);
-//        filterRegistrationBean.setFilter(statelessAuthenticationFilter);
-//        return filterRegistrationBean;
-//    }
+	@Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setEnabled(false);
+        filterRegistrationBean.setFilter(statelessAuthenticationFilter);
+        return filterRegistrationBean;
+    }
 }
