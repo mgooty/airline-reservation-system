@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
-import org.joda.time.DateTime;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity

@@ -64,7 +64,6 @@ public class FlightController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public FlightBookingOutput createBooking(@RequestBody FlightBookingInput flightBookingInput) {
 //		flightValidator.validateForCreateBooking(flightBookingInput);
-		flightBookingInput.setEmail("mithun.gooty@gmail.com");
 		flightBookingInput.setName("mithun");
 		flightBookingInput.setMobileNum("1234567890");
 		return flightService.createBooking(flightBookingInput);

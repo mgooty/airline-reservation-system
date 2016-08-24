@@ -32,7 +32,7 @@ public class Booking extends BaseEntity {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "flight_id")
+	@JoinColumn(name = "flight_id", nullable = false)
 	private Flight flight;
 	
 	@Column(name = "num_of_seats", nullable = false)

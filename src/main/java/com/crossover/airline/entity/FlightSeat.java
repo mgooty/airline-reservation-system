@@ -8,11 +8,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Version;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "flight_seat", uniqueConstraints = @UniqueConstraint(columnNames={"flight_id", "seat_number"}))
 public class FlightSeat extends BaseEntity {
 
 	private static final long serialVersionUID = -6109352770497829567L;
@@ -32,6 +36,10 @@ public class FlightSeat extends BaseEntity {
 	@JoinColumn(name = "passenger_id")
 	private Passenger passenger;
 
+	@Column(name  = "lockId", nullable = false)
+	@Version
+	private long lockId;
+	
 	public Long getId() {
 		return id;
 	}

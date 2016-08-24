@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.crossover.airline.auth.UserContext;
 import com.crossover.airline.entity.Booking;
 import com.crossover.airline.entity.Booking.BookingStatus;
 import com.crossover.airline.entity.Flight;
@@ -53,6 +54,9 @@ public class FlightServiceImpl implements FlightService {
 	@Autowired
 	private FlightSeatRepository flightSeatRepository;
 
+	@Autowired
+	private UserContext userContext;
+	
 	@Value("${duration.for.checkin.in.hrs:48}")
 	private int durationForCheckin;
 	
@@ -103,7 +107,7 @@ public class FlightServiceImpl implements FlightService {
 		Booking onwardBooking = new Booking();
 		onwardBooking.setAmount(flightBookingInput.getNumOfSeats() * onwardFlight.getPricePerSeat());
 		onwardBooking.setBookingStatus(BookingStatus.PENDING_PAYMENT);
-		onwardBooking.setEmail(flightBookingInput.getEmail());
+		onwardBooking.setEmail(userContext.getCurrentUser());
 		onwardBooking.setMobileNumber(flightBookingInput.getMobileNum());
 		onwardBooking.setName(flightBookingInput.getName());
 		onwardBooking.setNumOfSeats(flightBookingInput.getNumOfSeats());
@@ -118,17 +122,17 @@ public class FlightServiceImpl implements FlightService {
 		if(flightBookingInput.getReturnFlightId() != null && flightBookingInput.getReturnFlightId() != 0) {
 			returnBooking.setAmount(flightBookingInput.getNumOfSeats() * returnFlight.getPricePerSeat());
 			returnBooking.setBookingStatus(BookingStatus.PENDING_PAYMENT);
-			returnBooking.setEmail(flightBookingInput.getEmail());
+			returnBooking.setEmail(userContext.getCurrentUser());
 			returnBooking.setMobileNumber(flightBookingInput.getMobileNum());
 			returnBooking.setName(flightBookingInput.getName());
 			returnBooking.setNumOfSeats(flightBookingInput.getNumOfSeats());
 			returnBooking.setFlight(returnFlight);
 			
 			bookingRepository.save(returnBooking);
+			
+			returnFlight.setNoOfSeatsAvailable(returnFlight.getNoOfSeatsAvailable() - flightBookingInput.getNumOfSeats());
+			flightRepository.save(returnFlight);
 		}
-		
-		returnFlight.setNoOfSeatsAvailable(returnFlight.getNoOfSeatsAvailable() - flightBookingInput.getNumOfSeats());
-		flightRepository.save(returnFlight);
 		
 		FlightBookingOutput flightBookingOutput = new FlightBookingOutput();
 		flightBookingOutput.setOnwardBookingId(onwardBooking.getId());
@@ -230,19 +234,28 @@ public class FlightServiceImpl implements FlightService {
 		}
 		
 		List<Long> seatIds = new ArrayList<>();
+		List<Long> passengerIds = new ArrayList<>();
 		Map<Long, FlightSeatInput> seatsMap = new HashMap<>();
 		for(FlightSeatInput flightSeatInput: checkinInput.getSeats()) {
 			seatIds.add(flightSeatInput.getSeatId());
+			passengerIds.add(flightSeatInput.getPassengerId());
 			seatsMap.put(flightSeatInput.getSeatId(), flightSeatInput);
 		}
 		List<FlightSeat> flightSeats = flightSeatRepository.findAll(seatIds);
+		List<Passenger> passengers = passengerRepository.findAll(passengerIds);
 		
 		for(FlightSeat flightSeat: flightSeats) {
-			if(flightSeat.getSeatNumber() != 0) {
+			if(flightSeat.getPassenger() != null) {
 				throw new AirlineException(AirlineError.FLIGHT_CHECKIN_SEAT_NOT_AVAILABLE, flightSeat.getSeatNumber());
 			}
 			
-			flightSeat.setSeatNumber(seatsMap.get(flightSeat.getId()).getSeatNumber());
+			FlightSeatInput flightSeatInput = seatsMap.get(flightSeat.getId());
+			for(Passenger passenger: passengers) {
+				if(passenger.getId() == flightSeatInput.getPassengerId()) {
+					flightSeat.setPassenger(passenger);
+					break;
+				}
+			}
 		}
 		
 		flightSeatRepository.save(flightSeats);

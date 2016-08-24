@@ -123,11 +123,11 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public String generateTicketAsPdf(Long onwardBookingId, Long returnBookingId, Long paymentTxnId, Long onwardFlightId,
 			Long returnFlightId)  throws Exception {
-		Flight onwardflight = flightRepository.findOne(onwardBookingId);
-		Booking onwardBooking = bookingRepository.findOne(onwardFlightId);
+		Flight onwardflight = flightRepository.findOne(onwardFlightId);
+		Booking onwardBooking = bookingRepository.findOne(onwardBookingId);
 		
-		Flight returnFlight = flightRepository.findOne(returnBookingId);
-		Booking returnBooking = bookingRepository.findOne(returnFlightId);
+		Flight returnFlight = flightRepository.findOne(returnFlightId);
+		Booking returnBooking = bookingRepository.findOne(returnBookingId);
 		
 		Document document = new Document();
 		File file = new File(generatedDocsFolder + '/' + onwardBooking.getId() + ".pdf");
@@ -171,7 +171,7 @@ public class DocumentServiceImpl implements DocumentService {
 		document.add(paragraph2);
 		document.add(paragraph3);
 		
-		Paragraph returnJourneyParagraph = new Paragraph("Onward Journey");
+		Paragraph returnJourneyParagraph = new Paragraph("Return Journey");
 		List returnOrderedList = new List(List.ORDERED);
 		returnOrderedList.add(new ListItem("Booking ID - " + returnBookingId));
 		returnOrderedList.add(new ListItem("From - " + returnFlight.getFromCity()));

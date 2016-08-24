@@ -47,7 +47,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 		Booking returnBooking = null;
 		
 		if(creditCardPaymentInput.getReturnBookingId() != null && creditCardPaymentInput.getReturnBookingId() != 0) {
-			returnBooking = bookingRepository.findOne(creditCardPaymentInput.getOnwardBookingId());
+			returnBooking = bookingRepository.findOne(creditCardPaymentInput.getReturnBookingId());
 		}
 		
 		PaymentTxn paymentTxn = new PaymentTxn();
@@ -71,7 +71,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 				returnBooking.setBookingStatus(BookingStatus.CONFIRMED);
 				bookingRepository.save(returnBooking);
 				
-				returnFlight = flightRepository.findOne(onwardBooking.getFlight().getId());
+				returnFlight = flightRepository.findOne(returnBooking.getFlight().getId());
 				returnFlight.setNoOfSeatsBooked(returnFlight.getNoOfSeatsBooked() + returnBooking.getNumOfSeats());
 				flightRepository.save(returnFlight);
 			}
@@ -79,10 +79,10 @@ public class PaymentsServiceImpl implements PaymentsService {
 			// TODO: push an event to the queue - PAYMENT_PROCESSED. Event handler will email tickets as PDF document
 			String pathToTicket = ""; 
 			if(returnBooking == null) {
-				documentService.generateTicketAsPdf(onwardBooking.getId(), paymentTxn.getId(), onwardFlight.getId());
+				pathToTicket = documentService.generateTicketAsPdf(onwardBooking.getId(), paymentTxn.getId(), onwardFlight.getId());
 				mailService.sendMail(subject, onwardBooking.getEmail(), String.format(body, onwardBooking.getName()), pathToTicket);
 			} else {
-				documentService.generateTicketAsPdf(onwardBooking.getId(), returnBooking.getId(), paymentTxn.getId(), onwardFlight.getId(), returnFlight.getId());
+				pathToTicket = documentService.generateTicketAsPdf(onwardBooking.getId(), returnBooking.getId(), paymentTxn.getId(), onwardFlight.getId(), returnFlight.getId());
 				mailService.sendMail(subject, onwardBooking.getEmail(), String.format(body, onwardBooking.getName()), pathToTicket);
 			}
 		} else {
