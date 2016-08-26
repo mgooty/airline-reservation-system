@@ -59,17 +59,21 @@ public class StatelessAuthenticationFilter extends GenericFilterBean {
 			jwtPayload.setExp((Long) claims.get("exp"));
 		} catch(Exception e) {
 			e.printStackTrace();
-			handleAuthenticationFailure(httpResponse, e.getMessage());
+			handleAuthenticationFailure(httpResponse, AirlineError.AUTHENTICATION_AUTH_TOKEN_INVALID.getMsg());
+			return;
 		}
 		
 		if (new DateTime(jwtPayload.getExp()).isBeforeNow()) {
-			throw new AuthenticationException(AirlineError.AUTHENTICATION_AUTH_TOKEN_EXPIRED);
+			handleAuthenticationFailure(httpResponse, AirlineError.AUTHENTICATION_AUTH_TOKEN_EXPIRED.getMsg());
+			return;
 		}
 		
 		User user = userRepository.findOne(jwtPayload.getEmail());
 		if(user == null) {
 			handleAuthenticationFailure(httpResponse, "User does not exist in the system");
+			return;
 		}
+		
 		SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(user.getEmail()));
 		chain.doFilter(request, response);
 	}

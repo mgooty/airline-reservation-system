@@ -18,7 +18,8 @@ public enum AirlineError {
 	
 	AUTHENTICATION_ERROR("AE001", "Invalid email and password combination"),
 	AUTHENTICATION_AUTH_TOKEN_MISSING("AE002", "X-AUTH-TOKEN header is mandatory"),
-	AUTHENTICATION_AUTH_TOKEN_EXPIRED("AE00", "X-AUTH-TOKEN header has expired")
+	AUTHENTICATION_AUTH_TOKEN_EXPIRED("AE003", "X-AUTH-TOKEN header has expired"),
+	AUTHENTICATION_AUTH_TOKEN_INVALID("AE004", "X-AUTH-TOKEN header is invalid")
 	;
 	
 	private final String code;
