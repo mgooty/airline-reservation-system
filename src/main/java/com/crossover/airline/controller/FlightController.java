@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,11 +98,13 @@ public class FlightController {
 		
 	}
 	
+	@PreAuthorize(value = "hasRole('ROLE_INTERNAL')")
 	@RequestMapping(value = "/booking/{bookingId}/cancel", method = RequestMethod.PUT)
 	public void cancelBooking(@PathVariable Long bookingId) {
 		
 	}
 	
+	@PreAuthorize(value = "hasRole('ROLE_INTERNAL')")
 	@RequestMapping(value = "/{flightId}/cancel", method = RequestMethod.PUT)
 	public void cancelFight(@PathVariable Long flightId) {
 		

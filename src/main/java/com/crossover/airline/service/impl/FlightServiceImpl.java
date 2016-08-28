@@ -158,6 +158,10 @@ public class FlightServiceImpl implements FlightService {
 	private void addPassengerToBooking(BookingPassengerRecord bookingPassengerRecord, GetPassengerOutput output) {
 		Booking booking = bookingRepository.findOne(bookingPassengerRecord.getBookingId());
 		
+		if(booking.getNumOfSeats() != bookingPassengerRecord.getPassengers().size()) {
+			throw new AirlineException(AirlineError.CREATE_PASSENGER_INCORRECT_SIZE, booking.getNumOfSeats(), bookingPassengerRecord.getPassengers().size());
+		}
+		
 		List<Passenger> passengers = new ArrayList<>();
 		Passenger passenger = null;
 		for(PassengerInput passengerInput: bookingPassengerRecord.getPassengers()) {

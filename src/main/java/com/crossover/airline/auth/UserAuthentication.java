@@ -1,6 +1,8 @@
 package com.crossover.airline.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,8 +13,11 @@ public class UserAuthentication implements Authentication {
 	
 	private String email;
 	
-	public UserAuthentication(String email) {
+	private String role;
+	
+	public UserAuthentication(String email, String role) {
 		this.email = email;
+		this.role = role;		
 	}
 	
 	public String getEmail() {
@@ -30,7 +35,17 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		GrantedAuthority authority = new GrantedAuthority() {
+			
+			@Override
+			public String getAuthority() {
+				return role;
+			}
+		};
+		
+		authorities.add(authority);
+		return authorities;
 	}
 
 	@Override
@@ -45,7 +60,7 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public Object getPrincipal() {
-		return null;
+		return email;
 	}
 
 	@Override
@@ -58,4 +73,11 @@ public class UserAuthentication implements Authentication {
 
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 }

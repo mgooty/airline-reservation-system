@@ -2,7 +2,6 @@ package com.crossover.airline.service.impl;
 
 import java.io.File;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +22,36 @@ public class MailServiceImpl implements MailService {
 	@Value("${send.from.email}")
 	private String fromEmail;
 	
+	@Value("${email.subject.format}")
+	private String subject;
+	
+	@Value("${email.body.format}")
+	private String body;
+	
 	@Override
-	public void sendMail(String subject, String toEmail, String body, String attachmentPath) throws MessagingException {
-		MimeMessage message = mailSender.createMimeMessage();
-		
-		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(toEmail);
-		helper.setFrom(fromEmail);
-		helper.setSubject(subject);
-		helper.setText(body);
-		
-		FileSystemResource file = new FileSystemResource(new File(attachmentPath));
-		helper.addAttachment(file.getFilename(), file);
-		
-		mailSender.send(message);
+	public void emailTickets(String toEmail, String name, String attachmentPath) {
+		sendEmail(toEmail, subject, String.format(body, name), attachmentPath);
 	}
 
+	private void sendEmail(String toEmail, String subject, String body, String attachmentPath) {
+		MimeMessage message = mailSender.createMimeMessage();
+		
+		MimeMessageHelper helper;
+		try {
+			helper = new MimeMessageHelper(message, true);
+		
+			helper.setTo(toEmail);
+			helper.setFrom(fromEmail);
+			helper.setSubject(subject);
+			helper.setText(body);
+			
+			FileSystemResource file = new FileSystemResource(new File(attachmentPath));
+			helper.addAttachment(file.getFilename(), file);
+			
+			mailSender.send(message);
+		} catch (Exception e) {
+			// TODO log error message
+			e.printStackTrace();
+		}
+	}
 }
