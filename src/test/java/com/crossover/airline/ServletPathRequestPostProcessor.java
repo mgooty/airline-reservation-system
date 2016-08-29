@@ -1,4 +1,4 @@
-package com.crossover.airline.controller;
+package com.crossover.airline;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.stereotype.Component;

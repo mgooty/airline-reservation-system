@@ -1,4 +1,4 @@
-package com.crossover.airline.controller;
+package com.crossover.airline;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -12,8 +12,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.crossover.airline.entity.User;
+import com.crossover.airline.entity.User.Role;
 import com.crossover.airline.repository.UserRepository;
 import com.crossover.airline.service.TokenService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class BaseControllerTest {
 
@@ -26,12 +28,14 @@ public abstract class BaseControllerTest {
 	private Filter springSecurityFilterChain;
 	
 	@Autowired
-	private TokenService tokenService;
+	protected TokenService tokenService;
 	
 	@Autowired
 	private UserRepository userRepository;
 	
 	protected XAuthTokenRequestPostProcessor xAuthToken = new XAuthTokenRequestPostProcessor();
+	
+	private static ObjectMapper objectMapper = new ObjectMapper();
 	
 	@Before
 	public void setup() throws Exception {
@@ -39,19 +43,33 @@ public abstract class BaseControllerTest {
 												.contentType(MediaType.APPLICATION_JSON))
 												.addFilters(springSecurityFilterChain).build();
 		
-		User user = createUser();
-		
-		String xauthToken = tokenService.createToken(user.getEmail());
-		xAuthToken.setToken(xauthToken);
+//		User user = createInternalUser();
+//		
+//		String xauthToken = tokenService.createToken(user.getEmail());
+//		xAuthToken.setToken(xauthToken);
 	}
 
-	private User createUser() {
+	protected User createInternalUser() {
 		User user = new User();
-		user.setEmail("test@abc.com");
+		user.setEmail("internal@abc.com");
 		user.setPassword("password");
+		user.setName("internal user");
+		user.setRole(Role.ROLE_INTERNAL);
 		
 		return userRepository.save(user);
 	}
 	
+	protected User createPublicUser() {
+		User user = new User();
+		user.setEmail("public@abc.com");
+		user.setPassword("password");
+		user.setName("public user");
+		user.setRole(Role.ROLE_PUBLIC);
+		
+		return userRepository.save(user);
+	}
 	
+	public static String toJson(Object obj) throws Exception {
+		return objectMapper.writeValueAsString(obj);
+	}
 }

@@ -1,7 +1,8 @@
-package com.crossover.airline.controller;
+package com.crossover.airline;
 
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.util.StringUtils;
 
 public class XAuthTokenRequestPostProcessor implements RequestPostProcessor {
 
@@ -9,7 +10,9 @@ public class XAuthTokenRequestPostProcessor implements RequestPostProcessor {
 
 	@Override
 	public MockHttpServletRequest postProcessRequest(MockHttpServletRequest mockRequest) {
-		mockRequest.addHeader("X-AUTH-TOKEN", token);
+		if(StringUtils.hasText(token)) {
+			mockRequest.addHeader("X-AUTH-TOKEN", token);
+		}
 		return mockRequest;
 	}
 

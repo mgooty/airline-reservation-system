@@ -5,9 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserContext {
-
 	
-	public String getCurrentUser() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
+	public UserAuthentication getCurrentUser() {
+		return (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
 	}
 }

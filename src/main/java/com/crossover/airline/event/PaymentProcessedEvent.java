@@ -67,6 +67,53 @@ public class PaymentProcessedEvent extends BaseEvent {
 	public void setPaymentTxnId(Long paymentTxnId) {
 		this.paymentTxnId = paymentTxnId;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((onwardBookingId == null) ? 0 : onwardBookingId.hashCode());
+		result = prime * result + ((onwardFlightId == null) ? 0 : onwardFlightId.hashCode());
+		result = prime * result + ((paymentTxnId == null) ? 0 : paymentTxnId.hashCode());
+		result = prime * result + ((returnBookingId == null) ? 0 : returnBookingId.hashCode());
+		result = prime * result + ((returnFlightId == null) ? 0 : returnFlightId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PaymentProcessedEvent other = (PaymentProcessedEvent) obj;
+		if (onwardBookingId == null) {
+			if (other.onwardBookingId != null)
+				return false;
+		} else if (!onwardBookingId.equals(other.onwardBookingId))
+			return false;
+		if (onwardFlightId == null) {
+			if (other.onwardFlightId != null)
+				return false;
+		} else if (!onwardFlightId.equals(other.onwardFlightId))
+			return false;
+		if (paymentTxnId == null) {
+			if (other.paymentTxnId != null)
+				return false;
+		} else if (!paymentTxnId.equals(other.paymentTxnId))
+			return false;
+		if (returnBookingId == null) {
+			if (other.returnBookingId != null)
+				return false;
+		} else if (!returnBookingId.equals(other.returnBookingId))
+			return false;
+		if (returnFlightId == null) {
+			if (other.returnFlightId != null)
+				return false;
+		} else if (!returnFlightId.equals(other.returnFlightId))
+			return false;
+		return true;
+	}
 }

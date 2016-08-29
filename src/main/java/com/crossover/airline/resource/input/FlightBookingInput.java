@@ -10,10 +10,6 @@ public class FlightBookingInput extends BaseInput {
 	
 	private String mobileNum;
 	
-	private String email;
-	
-	private String name;
-	
 	private Long onwardFlightId;
 	
 	private Long returnFlightId;
@@ -32,22 +28,6 @@ public class FlightBookingInput extends BaseInput {
 
 	public void setMobileNum(String mobileNum) {
 		this.mobileNum = mobileNum;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Long getOnwardFlightId() {

@@ -71,4 +71,49 @@ public class FlightSeat extends BaseEntity {
 	public void setPassenger(Passenger passenger) {
 		this.passenger = passenger;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((flight == null) ? 0 : flight.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (int) (lockId ^ (lockId >>> 32));
+		result = prime * result + ((passenger == null) ? 0 : passenger.hashCode());
+		result = prime * result + seatNumber;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FlightSeat other = (FlightSeat) obj;
+		if (flight == null) {
+			if (other.flight != null)
+				return false;
+		} else if (!flight.equals(other.flight))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lockId != other.lockId)
+			return false;
+		if (passenger == null) {
+			if (other.passenger != null)
+				return false;
+		} else if (!passenger.equals(other.passenger))
+			return false;
+		if (seatNumber != other.seatNumber)
+			return false;
+		return true;
+	}
+	
+	
 }

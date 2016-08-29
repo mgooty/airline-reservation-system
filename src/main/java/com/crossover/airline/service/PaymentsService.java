@@ -5,5 +5,5 @@ import com.crossover.airline.resource.output.BookingPaymentOutput;
 
 public interface PaymentsService {
 
-	BookingPaymentOutput processCreditCardPayment(CreditCardPaymentInput creditCardPaymentInput) throws Exception;
+	BookingPaymentOutput processCreditCardPayment(CreditCardPaymentInput creditCardPaymentInput);
 }

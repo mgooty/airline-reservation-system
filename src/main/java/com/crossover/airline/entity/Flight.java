@@ -10,12 +10,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "flight", uniqueConstraints = @UniqueConstraint(columnNames={"flight_code", "class"}))
 public class Flight extends BaseEntity {
 
 	private static final long serialVersionUID = -1775543068619893106L;
@@ -170,4 +173,82 @@ public class Flight extends BaseEntity {
 	public void setLockId(long lockId) {
 		this.lockId = lockId;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((departureDate == null) ? 0 : departureDate.hashCode());
+		result = prime * result + durationInMins;
+		result = prime * result + ((flightClass == null) ? 0 : flightClass.hashCode());
+		result = prime * result + ((flightCode == null) ? 0 : flightCode.hashCode());
+		result = prime * result + ((flightStatus == null) ? 0 : flightStatus.hashCode());
+		result = prime * result + ((fromCity == null) ? 0 : fromCity.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + (int) (lockId ^ (lockId >>> 32));
+		result = prime * result + noOfSeatsAvailable;
+		result = prime * result + noOfSeatsBooked;
+		result = prime * result + ((pricePerSeat == null) ? 0 : pricePerSeat.hashCode());
+		result = prime * result + ((toCity == null) ? 0 : toCity.hashCode());
+		result = prime * result + totalNoOfSeats;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Flight other = (Flight) obj;
+		if (departureDate == null) {
+			if (other.departureDate != null)
+				return false;
+		} else if (!departureDate.equals(other.departureDate))
+			return false;
+		if (durationInMins != other.durationInMins)
+			return false;
+		if (flightClass != other.flightClass)
+			return false;
+		if (flightCode == null) {
+			if (other.flightCode != null)
+				return false;
+		} else if (!flightCode.equals(other.flightCode))
+			return false;
+		if (flightStatus != other.flightStatus)
+			return false;
+		if (fromCity == null) {
+			if (other.fromCity != null)
+				return false;
+		} else if (!fromCity.equals(other.fromCity))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lockId != other.lockId)
+			return false;
+		if (noOfSeatsAvailable != other.noOfSeatsAvailable)
+			return false;
+		if (noOfSeatsBooked != other.noOfSeatsBooked)
+			return false;
+		if (pricePerSeat == null) {
+			if (other.pricePerSeat != null)
+				return false;
+		} else if (!pricePerSeat.equals(other.pricePerSeat))
+			return false;
+		if (toCity == null) {
+			if (other.toCity != null)
+				return false;
+		} else if (!toCity.equals(other.toCity))
+			return false;
+		if (totalNoOfSeats != other.totalNoOfSeats)
+			return false;
+		return true;
+	}
+	
+	
 }

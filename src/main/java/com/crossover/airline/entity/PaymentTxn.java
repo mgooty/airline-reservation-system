@@ -50,6 +50,9 @@ public class PaymentTxn extends BaseEntity {
 	@Column(name = "total_amount")
 	private Double totalAmount;
 	
+	@Column(name = "txn_ref_number")
+	private String txnRefNumber;
+	
 	public Long getId() {
 		return id;
 	}
@@ -97,4 +100,13 @@ public class PaymentTxn extends BaseEntity {
 	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
+
+	public String getTxnRefNumber() {
+		return txnRefNumber;
+	}
+
+	public void setTxnRefNumber(String txnRefNumber) {
+		this.txnRefNumber = txnRefNumber;
+	}
+	
 }

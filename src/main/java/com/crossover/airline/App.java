@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
@@ -31,5 +32,10 @@ public class App {
 	@Bean
 	public Queue ticketGeneratedQueue() {
 		return new ActiveMQQueue(TICKET_GENERATED_QUEUE_NAME);
+	}
+	
+	@Bean
+	public RestTemplate restTemplate() {
+		return new RestTemplate();
 	}
 }

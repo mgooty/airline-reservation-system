@@ -1,6 +1,7 @@
 package com.crossover.airline.service.impl;
 
 import static com.crossover.airline.exception.AirlineError.CREATE_FLIGHT_ONWARD_BOOKING_INSUFFICIENT_SEATS;
+import static com.crossover.airline.exception.AirlineError.CREATE_FLIGHT_RETURN_BOOKING_INSUFFICIENT_SEATS;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,20 +97,28 @@ public class FlightServiceImpl implements FlightService {
 	@Override
 	public FlightBookingOutput createBooking(FlightBookingInput flightBookingInput) {
 		Flight onwardFlight = flightRepository.findOne(flightBookingInput.getOnwardFlightId());
-		Flight returnFlight = flightRepository.findOne(flightBookingInput.getReturnFlightId());
 		
 		// Check if number of seats are available
 		if(onwardFlight.getNoOfSeatsAvailable() < flightBookingInput.getNumOfSeats()) {
 			throw new AirlineException(CREATE_FLIGHT_ONWARD_BOOKING_INSUFFICIENT_SEATS, flightBookingInput.getNumOfSeats(), onwardFlight.getNoOfSeatsAvailable());
 		}
 		
+		Flight returnFlight = null;
+		if(flightBookingInput.getReturnFlightId() != null) {
+			returnFlight = flightRepository.findOne(flightBookingInput.getReturnFlightId());
+			if(returnFlight != null && (returnFlight.getNoOfSeatsAvailable() < flightBookingInput.getNumOfSeats())) {
+				throw new AirlineException(CREATE_FLIGHT_RETURN_BOOKING_INSUFFICIENT_SEATS, flightBookingInput.getNumOfSeats(), returnFlight.getNoOfSeatsAvailable());
+			}
+			
+		}
+		
 		// Create booking with status PENDING_PAYMENT
 		Booking onwardBooking = new Booking();
 		onwardBooking.setAmount(flightBookingInput.getNumOfSeats() * onwardFlight.getPricePerSeat());
 		onwardBooking.setBookingStatus(BookingStatus.PENDING_PAYMENT);
-		onwardBooking.setEmail(userContext.getCurrentUser());
+		onwardBooking.setEmail(userContext.getCurrentUser().getEmail());
 		onwardBooking.setMobileNumber(flightBookingInput.getMobileNum());
-		onwardBooking.setName(flightBookingInput.getName());
+		onwardBooking.setName(userContext.getCurrentUser().getName());
 		onwardBooking.setNumOfSeats(flightBookingInput.getNumOfSeats());
 		onwardBooking.setFlight(onwardFlight);
 		bookingRepository.save(onwardBooking);
@@ -122,9 +131,9 @@ public class FlightServiceImpl implements FlightService {
 		if(flightBookingInput.getReturnFlightId() != null && flightBookingInput.getReturnFlightId() != 0) {
 			returnBooking.setAmount(flightBookingInput.getNumOfSeats() * returnFlight.getPricePerSeat());
 			returnBooking.setBookingStatus(BookingStatus.PENDING_PAYMENT);
-			returnBooking.setEmail(userContext.getCurrentUser());
+			returnBooking.setEmail(userContext.getCurrentUser().getEmail());
 			returnBooking.setMobileNumber(flightBookingInput.getMobileNum());
-			returnBooking.setName(flightBookingInput.getName());
+			returnBooking.setName(userContext.getCurrentUser().getName());
 			returnBooking.setNumOfSeats(flightBookingInput.getNumOfSeats());
 			returnBooking.setFlight(returnFlight);
 			
@@ -221,7 +230,9 @@ public class FlightServiceImpl implements FlightService {
 		for(FlightSeat flightSeat: flightSeats) {
 			flightSeatOutput = new FlightSeatOutput();
 			flightSeatOutput.setFlightId(flightSeat.getFlight().getId());
-			flightSeatOutput.setPassengerId(flightSeat.getPassenger().getId());
+			if(flightSeat.getPassenger() != null) {
+				flightSeatOutput.setPassengerId(flightSeat.getPassenger().getId());
+			}
 			flightSeatOutput.setSeatNumber(flightSeat.getSeatNumber());
 			flightSeatOutput.setSeatId(flightSeat.getId());
 			

@@ -7,17 +7,22 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import com.crossover.airline.entity.User.Role;
+
 public class UserAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 6744662980915711828L;
 	
 	private String email;
 	
-	private String role;
+	private Role role;
 	
-	public UserAuthentication(String email, String role) {
+	private String name;
+	
+	public UserAuthentication(String email, String name, Role role) {
 		this.email = email;
-		this.role = role;		
+		this.role = role;
+		this.name = name;
 	}
 	
 	public String getEmail() {
@@ -30,7 +35,7 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public String getName() {
-		return email;
+		return name;
 	}
 
 	@Override
@@ -40,7 +45,7 @@ public class UserAuthentication implements Authentication {
 			
 			@Override
 			public String getAuthority() {
-				return role;
+				return role.name();
 			}
 		};
 		
@@ -73,11 +78,11 @@ public class UserAuthentication implements Authentication {
 
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 }

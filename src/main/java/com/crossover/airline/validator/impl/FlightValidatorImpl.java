@@ -22,13 +22,13 @@ public class FlightValidatorImpl implements FlightValidator {
 			throw new ValidationException(CREATE_FLIGHT_BOOKING_NUM_OF_SEATS_IS_MANDATORY);
 		}
 		
-		if(!StringUtils.hasText(flightBookingInput.getEmail())) {
-			throw new ValidationException(CREATE_FLIGHT_EMAILID_IS_MANDATORY);
-		}
-		
-		if(!StringUtils.hasText(flightBookingInput.getName())) {
-			throw new ValidationException(CREATE_FLIGHT_NAME_IS_MANDATORY);
-		}
+//		if(!StringUtils.hasText(flightBookingInput.getEmail())) {
+//			throw new ValidationException(CREATE_FLIGHT_EMAILID_IS_MANDATORY);
+//		}
+//		
+//		if(!StringUtils.hasText(flightBookingInput.getName())) {
+//			throw new ValidationException(CREATE_FLIGHT_NAME_IS_MANDATORY);
+//		}
 		
 		if(!StringUtils.hasText(flightBookingInput.getMobileNum())) {
 			throw new ValidationException(CREATE_FLIGHT_BOOKING_MOBILE_NUM_IS_MANDATORY);

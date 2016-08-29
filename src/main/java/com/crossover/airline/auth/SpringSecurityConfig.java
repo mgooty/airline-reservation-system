@@ -51,7 +51,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
     public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/auth", "/css/**", "/js/**", "/login.html");
+		web.ignoring().antMatchers("/auth", "/css/**", "/js/**", "/login.html", "/paymentGateway");
 	}
 	
 	@Bean
