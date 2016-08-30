@@ -4,8 +4,6 @@ public enum AirlineError {
 
 	CREATE_FLIGHT_BOOKING_NUM_OF_SEATS_IS_MANDATORY("CFB001", "Number of seats is mandatory to create a booking"),
 	CREATE_FLIGHT_BOOKING_AMOUNT_IS_MANDATORY("CFB002", "Flight booking amount is mandatory"),
-	CREATE_FLIGHT_EMAILID_IS_MANDATORY("CFB003", "eamil ID is mandatory to book a flight"),
-	CREATE_FLIGHT_NAME_IS_MANDATORY("CFB004", "Name is mandatory to book a flight"),
 	CREATE_FLIGHT_BOOKING_PASSENDER_LIST_IS_EMPTY("CFB005", "Passenger details cannot be empty to book a flight"),
 	CREATE_FLIGHT_BOOKING_MOBILE_NUM_IS_MANDATORY("CFB006", "Mobile number is mandatory to book a flight"),
 	CREATE_FLIGHT_RETURN_BOOKING_INSUFFICIENT_SEATS("CFB007", "We do not have %s seats available for your return journey. Only %s seats are available for booking"),

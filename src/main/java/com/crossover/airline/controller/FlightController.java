@@ -21,6 +21,7 @@ import com.crossover.airline.resource.input.CreatePassengersInput;
 import com.crossover.airline.resource.input.CreditCardPaymentInput;
 import com.crossover.airline.resource.input.FlightBookingInput;
 import com.crossover.airline.resource.input.FlightInput;
+import com.crossover.airline.resource.output.BookingDetailsOutput;
 import com.crossover.airline.resource.output.BookingPaymentOutput;
 import com.crossover.airline.resource.output.FlightBookingOutput;
 import com.crossover.airline.resource.output.FlightOutput;
@@ -61,7 +62,7 @@ public class FlightController {
 	@RequestMapping(value = "/booking", method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public FlightBookingOutput createBooking(@RequestBody FlightBookingInput flightBookingInput) {
-//		flightValidator.validateForCreateBooking(flightBookingInput);
+		flightValidator.validateForCreateBooking(flightBookingInput);
 		return flightService.createBooking(flightBookingInput);
 	}
 	
@@ -86,16 +87,6 @@ public class FlightController {
 		return flightService.getFlightSeats(flightId);
 	}
 	
-	@RequestMapping(value = "/booking/{bookingId}/checkin", method = RequestMethod.POST)
-	public void checkin(@PathVariable Long bookingId, @RequestBody CheckinInput checkinInput) {
-		flightService.checkIn(bookingId, checkinInput);
-	}
-	
-	@RequestMapping(value = "/booking/my", method = RequestMethod.GET)
-	public void myBookings() {
-		
-	}
-	
 	@PreAuthorize(value = "hasRole('ROLE_INTERNAL')")
 	@RequestMapping(value = "/booking/{bookingId}/cancel", method = RequestMethod.PUT)
 	public void cancelBooking(@PathVariable Long bookingId) {
@@ -106,5 +97,21 @@ public class FlightController {
 	@RequestMapping(value = "/{flightId}/cancel", method = RequestMethod.PUT)
 	public void cancelFight(@PathVariable Long flightId) {
 		
+	}
+	
+	@RequestMapping(value = "/booking/public/{bookingId}/checkin", method = RequestMethod.POST)
+	public void checkin(@PathVariable Long bookingId, @RequestBody CheckinInput checkinInput) {
+		flightService.checkIn(bookingId, checkinInput);
+	}
+	
+	@RequestMapping(value = "/booking/public/my", method = RequestMethod.GET)
+	public BookingDetailsOutput myBookings(@RequestParam String email) {
+		return flightService.getMyBookings(email);
+	}
+	
+	@RequestMapping(value = "/booking/public/{bookingId}/cancel", method = RequestMethod.PUT)
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void cancelBookingByPublicUser(@PathVariable Long bookingId) {
+		flightService.cancelBooking(bookingId);
 	}
 }

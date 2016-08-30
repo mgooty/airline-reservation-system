@@ -167,12 +167,9 @@ public class FlightControllerTest extends BaseControllerTest {
 		setRestTemplateBehaviour(PaymentStatus.SUCCESS, "");
 		mockMvc.perform(post("/flight/booking/payment/credit").content(toJson(creditCardInput))).andExpect(status().isOk())
 					.andExpect(jsonPath("$.paymentTxnId").isNotEmpty());
-	}
-	
-	@Test
-	@Sql(scripts = {"/setup.sql", "/user.sql", "/flight.sql", "/flight_seat.sql"})
-	public void test() {
-		System.out.println("test ==========> " + flightRepository.findAll().size());
+		
+		// Get all bookings
+		mockMvc.perform(get("/flight/booking/public/my").param("email", user.getEmail())).andExpect(status().isOk()).andReturn();
 	}
 	
 	private void setRestTemplateBehaviour(PaymentStatus status, String referenceNum) {

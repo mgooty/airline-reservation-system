@@ -33,9 +33,9 @@ public class DocumentServiceImpl implements DocumentService {
 	private String apiBasePath;
 	
 	private final String BASEPATH = "/v1/flight/booking";
-	private final String CHECKIN_PATH = "/checkin";
-	private final String MYBOOKINGS_PATH = "/my";
-	private final String CANCEL_BOOKING_PATH = "/cancel";
+	private final String CHECKIN_PATH = "/public/checkin";
+	private final String MYBOOKINGS_PATH = "/public/my";
+	private final String CANCEL_BOOKING_PATH = "/public/cancel";
 	
 	@Autowired
 	private FlightRepository flightRepository;
@@ -100,7 +100,7 @@ public class DocumentServiceImpl implements DocumentService {
 		Font font = new Font();
 		font.setColor(BaseColor.BLUE);
 		Anchor anchor = new Anchor("My Bookings", font);
-		anchor.setReference(new StringBuffer().append(apiBasePath).append(BASEPATH).append(MYBOOKINGS_PATH).toString());
+		anchor.setReference(new StringBuffer().append(apiBasePath).append(BASEPATH).append(MYBOOKINGS_PATH).append("?email=" + email).toString());
 		return anchor;
 	}
 
@@ -153,7 +153,7 @@ public class DocumentServiceImpl implements DocumentService {
 		Paragraph paragraph1 = new Paragraph();
 		paragraph1.setSpacingBefore(10);
 		paragraph1.setSpacingAfter(10);
-		paragraph1.add(getMyBookingsLink(""));
+		paragraph1.add(getMyBookingsLink(onwardBooking.getEmail()));
 		
 		Paragraph paragraph2 = new Paragraph();
 		paragraph2.setSpacingBefore(10);

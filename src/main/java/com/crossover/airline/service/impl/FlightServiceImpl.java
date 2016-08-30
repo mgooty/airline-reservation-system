@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ import com.crossover.airline.resource.input.CreatePassengersInput;
 import com.crossover.airline.resource.input.CreatePassengersInput.BookingPassengerRecord;
 import com.crossover.airline.resource.input.FlightBookingInput;
 import com.crossover.airline.resource.input.PassengerInput;
+import com.crossover.airline.resource.output.BookingDetailsOutput;
+import com.crossover.airline.resource.output.BookingDetailsOutput.BookingRecord;
 import com.crossover.airline.resource.output.FlightBookingOutput;
 import com.crossover.airline.resource.output.FlightOutput;
 import com.crossover.airline.resource.output.FlightSeatOutput;
@@ -43,6 +47,8 @@ import com.crossover.airline.service.FlightService;
 @Service
 public class FlightServiceImpl implements FlightService {
 
+	Logger logger = LoggerFactory.getLogger(FlightServiceImpl.class);
+	
 	@Autowired
 	private FlightRepository flightRepository;
 	
@@ -63,6 +69,8 @@ public class FlightServiceImpl implements FlightService {
 	
 	@Override
 	public SearchFlightOutput searchFlights(Date departureDate, String fromCity, Date returnDate, String toCity, FlightClass flightClass, int numOfSeats, boolean onlyOnwards) {
+		logger.info("Search flights, departure date - {}, return date - {}, from city - {}, to city - {}, num of seats - {}, Flight class - {}, only onwards - {}",
+					departureDate, returnDate, fromCity, toCity, numOfSeats, flightClass, onlyOnwards);
 		
 		List<Flight> flights = null;
 		if(onlyOnwards) {
@@ -96,6 +104,8 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public FlightBookingOutput createBooking(FlightBookingInput flightBookingInput) {
+		logger.info("Create booking, onward flight id - {}, return flight id - {} ", flightBookingInput.getOnwardFlightId(), flightBookingInput.getReturnFlightId());
+		
 		Flight onwardFlight = flightRepository.findOne(flightBookingInput.getOnwardFlightId());
 		
 		// Check if number of seats are available
@@ -289,5 +299,72 @@ public class FlightServiceImpl implements FlightService {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public BookingDetailsOutput getMyBookings(String email) {
+		List<Booking> bookings = bookingRepository.findByEmail(email);
+		
+		List<BookingRecord> bookingsOutput = new ArrayList<>();
+		for(Booking booking: bookings) {
+			BookingRecord bookingRecord = new BookingRecord();
+			FlightBookingOutput bookingOutput = new FlightBookingOutput();
+			bookingOutput.setNumOfSeats(booking.getNumOfSeats());
+			bookingOutput.setTotalBookingAmount(booking.getAmount());
+			
+			FlightOutput flightOutput = new FlightOutput();
+			flightOutput.setDepartureDate(booking.getFlight().getDepartureDate());
+			flightOutput.setDurationInMins(booking.getFlight().getDurationInMins());
+			flightOutput.setFlightClass(booking.getFlight().getFlightClass());
+			flightOutput.setFlightCode(booking.getFlight().getFlightCode());
+			flightOutput.setFlightStatus(booking.getFlight().getFlightStatus());
+			flightOutput.setFromCity(booking.getFlight().getFromCity());
+			flightOutput.setToCity(booking.getFlight().getToCity());
+			
+			List<PassengerOutput> passengersOutput = new ArrayList<>();
+			List<Passenger> passengers = passengerRepository.findByBooking(booking);
+			for(Passenger passenger: passengers) {
+				PassengerOutput passengerOutput = new PassengerOutput();
+				passengerOutput.setAge(passenger.getAge());
+				passengerOutput.setGender(passenger.getGender());
+				passengerOutput.setName(passenger.getName());
+				
+				passengersOutput.add(passengerOutput);
+
+				List<FlightSeatOutput> seatsOutput = new ArrayList<>();
+				List<FlightSeat> flightSeats = flightSeatRepository.findByFlightAndPassenger(booking.getFlight(), passenger);
+				for(FlightSeat flightSeat: flightSeats) {
+					FlightSeatOutput seatOutput = new FlightSeatOutput();
+					seatOutput.setSeatNumber(flightSeat.getSeatNumber());
+					
+					seatsOutput.add(seatOutput);
+				}
+				bookingRecord.setSeats(seatsOutput);
+			}
+			
+			bookingRecord.setBooking(bookingOutput);
+			bookingRecord.setFlight(flightOutput);
+			bookingRecord.setPassengers(passengersOutput);
+			bookingsOutput.add(bookingRecord);
+		}
+		
+		BookingDetailsOutput output = new BookingDetailsOutput();
+		output.setBookings(bookingsOutput);
+		return output;
+	}
+
+	@Override
+	public void cancelBooking(Long bookingId) {
+		Booking booking = bookingRepository.findOne(bookingId);
+		booking.setBookingStatus(BookingStatus.CANCELLED);
+		
+		Flight flight = booking.getFlight();
+		flight.setNoOfSeatsBooked(flight.getNoOfSeatsBooked() - booking.getNumOfSeats());
+		flight.setNoOfSeatsAvailable(flight.getNoOfSeatsAvailable() + booking.getNumOfSeats());
+		
+		flightRepository.save(flight);
+		bookingRepository.save(booking);
+		
+		// TODO: add a message to queue to process refund asynchrnously
 	}
 }

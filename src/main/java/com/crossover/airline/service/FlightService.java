@@ -7,6 +7,7 @@ import com.crossover.airline.entity.FlightClass;
 import com.crossover.airline.resource.input.CheckinInput;
 import com.crossover.airline.resource.input.CreatePassengersInput;
 import com.crossover.airline.resource.input.FlightBookingInput;
+import com.crossover.airline.resource.output.BookingDetailsOutput;
 import com.crossover.airline.resource.output.FlightBookingOutput;
 import com.crossover.airline.resource.output.FlightSeatOutput;
 import com.crossover.airline.resource.output.GetPassengerOutput;
@@ -25,5 +26,9 @@ public interface FlightService {
 	void checkIn(Long bookingId, CheckinInput checkinInput);
 
 	GetPassengerOutput createPassengers(CreatePassengersInput createPassengersInput);
+
+	BookingDetailsOutput getMyBookings(String email);
+
+	void cancelBooking(Long bookingId);
 
 }
