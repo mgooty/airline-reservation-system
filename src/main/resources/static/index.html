@@ -14,161 +14,156 @@
 	<script type="text/javascript" src="js/app.js"></script>
 </head>
 
-<body style="margin-left: 10px;margin-right: 10px;margin-top: 10px;">
-    <div id='searchpanel' class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Choose Journey</h3>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px;">
+	<div id='loginpanel' class="panel panel-default">
+		<div class="panel-heading">
+            <h3 class="panel-title">Please login</h3>
         </div>
         <div class="panel-body">
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
+        	<div class="row">
+        		<div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-4" style="margin-top:20px">
                     <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon3">Start Date</span>
-                        <input type="date" class="form-control" id="fromdate" aria-describedby="basic-addon3">
+                        <span class="input-group-addon" id="basic-addon3">email</span>
+                        <input type="text" class="form-control" id="email" aria-describedby="basic-addon3">
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-                    <div class="input-group ">
-                        <span class="input-group-addon" id="basic-addon3">End Date</span>
-                        <input type="date" class="form-control" id="todate" aria-describedby="basic-addon3">
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-4" style="margin-top:20px;margin-bottom:20px">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon3">password</span>
+                        <input type="password" class="form-control" id="password" aria-describedby="basic-addon3">
                     </div>
                 </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-
-                    <div class="form-group">
-                        <label for="fromcity">From City</label>
-                        <select class="form-control" id="fromcity">
-                        <option> Select City</option>
-                        <option>Bangalore</option>
-                        <option>Delhi</option>
-                        <option>Mumbai</option>
-                        <option>Chennai</option>
-                    </select>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-                    <div class="form-group">
-                        <label for="tocity">To City</label>
-                        <select class="form-control" id="tocity">
-                        <option>Select City</option>
-                        <option>Bangalore</option>
-                        <option>Delhi</option>
-                        <option>Mumbai</option>
-                        <option>Chennai</option>
-                    </select>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-                    <div class="form-group">
-                        <label for="trip-class">Class</label>
-                        <select class="form-control" id="trip-class">
-                        <option>ECONOMY</option>
-                        <option>BUSINESS</option>
-
-                    </select>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-                    <div>
-                        <label for="numseat">Number Of Seats</label>
-                        <input type="number" class="form-control" id="numseat" aria-describedby="basic-addon3">
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4 col-sm-6 col-xs-12" style="margin-top:20px">
-                    <div class="form-group">
-                        <label class="checkbox-inline"><input type="checkbox" id="returntrip">Both Onward & Return</label>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <center>
-
-                    <button class=" btn btn-default btn-lg" id="searchflights"> Search Flights </button>
-
-                </center>
-            </div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-6" style="margin-top:20px;margin-bottom:20px">
+        			<button class=" btn btn-default btn-lg" id="login">Login</button>
+        		</div>
+        	</div>
         </div>
+	</div>
+	
+	<div id='searchpanel' class="panel panel-default" hidden>
+		<div class="panel-heading">
+			<h3 class="panel-title">Choose Journey</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon3">Start
+							Date</span> <input type="date" class="form-control" id="fromdate"
+							aria-describedby="basic-addon3">
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div class="input-group ">
+						<span class="input-group-addon" id="basic-addon3">End Date</span>
+						<input type="date" class="form-control" id="todate"
+							aria-describedby="basic-addon3">
+					</div>
+				</div>
+			</div>
 
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
 
+					<div class="form-group">
+						<label for="fromcity">From City</label> <select
+							class="form-control" id="fromcity">
+							<option>Select City</option>
+							<option>Bangalore</option>
+							<option>Delhi</option>
+							<option>Mumbai</option>
+							<option>Chennai</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div class="form-group">
+						<label for="tocity">To City</label> <select class="form-control"
+							id="tocity">
+							<option>Select City</option>
+							<option>Bangalore</option>
+							<option>Delhi</option>
+							<option>Mumbai</option>
+							<option>Chennai</option>
+						</select>
+					</div>
+				</div>
+			</div>
 
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div class="form-group">
+						<label for="trip-class">Class</label> <select class="form-control"
+							id="trip-class">
+							<option>ECONOMY</option>
+							<option>BUSINESS</option>
 
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div>
+						<label for="numseat">Number Of Seats</label> 
+						<input type="number" class="form-control" id="numseat" aria-describedby="basic-addon3">
+					</div>
+				</div>
+			</div>
 
-    </div>
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-xs-12" style="margin-top: 20px">
+					<div class="form-group">
+						<label class="checkbox-inline"><input type="checkbox" id="returntrip">Both Onward & Return</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<center>
+					<button class=" btn btn-default btn-lg" id="searchflights">Search Flights</button>
+				</center>
+			</div>
+		</div>
+	</div>
 
-    <--  Search Results-->
+	<div id="searchresult" class="panel panel-default" hidden>
+		<div class="panel-heading">
+			<h5>Search Result</h5>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 20px">
+				<div id="on-detail">
+					<h2>Onwards</h2>
+				</div>
+			</div>
 
-    <div id="searchresult" class="panel panel-default" hidden>
+			<div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 20px">
+				<div id="re-detail">
+					<h2>Return</h2>
+				</div>
+			</div>
+			<center>
+				<button class=" btn btn-default btn-lg" id="proc-book">Book</button>
+			</center>
+		</div>
+	</div>
 
-        <div class="panel-heading">
+	<div id="booking-details" class="panel panel-default" hidden>
+		<div class="panel-heading">
+			<h5>Provide Traveller details</h5>
+		</div>
 
-            <h5> Search Result</h5>
-
-        </div>
-
-        <div class="panel-body">
-            <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:20px">
-                <div id="on-detail">
-                    <h2>Onwards </h2>
-
-
-                </div>
-
-
-            </div>
-
-
-            <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top:20px">
-                <div id="re-detail">
-                    <h2>Return </h2>
-
-                </div>
-            </div>
-            <center>
-
-                <button class=" btn btn-default btn-lg" id="proc-book"> Book </button>
-
-            </center>
-        </div>
-
-    </div>
-
-        <--  Booking-->
- <div id="booking-details" class="panel panel-default" hidden>
-
-        <div class="panel-heading">
-
-            <h5> Provide Traveller details</h5>
-
-        </div>
-
-        <div class="panel-body">
-        
-        </div>
-<center>
-                <button class=" btn btn-default btn-lg" id="proceed-pay"> Proceed </button>
-            </center>
-    </div>
-
-
-
-    </div>
-
-
+		<div class="panel-body"></div>
+		<center>
+			<button class=" btn btn-default btn-lg" id="proceed-pay">Proceed</button>
+		</center>
+	</div>
+	
+	
 </body>
 
 </html>

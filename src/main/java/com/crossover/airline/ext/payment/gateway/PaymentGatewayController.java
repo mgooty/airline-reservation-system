@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.crossover.airline.entity.PaymentTxn.PaymentStatus;
 
-@RestController("/paymentGateway")
+@RestController
+@RequestMapping("/paymentGateway")
 public class PaymentGatewayController {
 
 	@RequestMapping(method = RequestMethod.POST)

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class AuthenticationController {
 	@Autowired
 	private TokenService tokenService;
 	
-	@RequestMapping
+	@RequestMapping(method = RequestMethod.POST)
 	public void authenticateInternalUsers(@RequestParam String email, @RequestParam String password, HttpServletResponse response) throws Exception {
 		User user = userRepository.findByEmailAndPassword(email, password);
 		

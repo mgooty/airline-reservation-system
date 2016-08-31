@@ -45,7 +45,7 @@ public class Booking extends BaseEntity {
 	@Column(name = "amount", nullable = false)
 	private double amount;
 	
-	@Column(name = "mobile_num", nullable = false, length = 10)
+	@Column(name = "mobile_num", length = 10)
 	private String mobileNumber;
 	
 	@Column(name = "email", nullable = false)

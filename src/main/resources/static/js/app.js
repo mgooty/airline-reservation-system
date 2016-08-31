@@ -28,6 +28,9 @@ $(document).ready(function() {
             cache: false,
             dataType: 'json',
             processData: false,
+            headers: {
+            	"X-AUTH-TOKEN":localStorage.getItem("X-AUTH-TOKEN")
+            },
             success: function(data, textStatus, jqXHR) {
                 if (data) {
                     $('#searchpanel').attr("hidden", "hidden");
@@ -37,16 +40,11 @@ $(document).ready(function() {
                             var onward = data.onwardFlights[i];
                             $('#on-detail').append(divgen(onward.id, onward.flightCode, onward.departureDate, onward.durationInMins, onward.pricePerSeat));
                         }
-
                         for (i = 0; i < data.returnFlights.length; i++) {
                             var onward = data.returnFlights[i];
                             $('#re-detail').append(divgen(onward.id, onward.flightCode, onward.departureDate, onward.durationInMins, onward.pricePerSeat));
                         }
-
-
                     }
-
-
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -99,6 +97,9 @@ $(document).ready(function() {
             cache: false,
             data: JSON.stringify(bookinin),
             contentType: 'application/json',
+            headers: {
+            	"X-AUTH-TOKEN":localStorage.getItem("X-AUTH-TOKEN")
+            },
             success: function(data, textStatus, jqXHR) {
                 $('#searchresult').attr("hidden", "hidden");
                 $('#booking-details').removeAttr("hidden");
@@ -114,22 +115,20 @@ $(document).ready(function() {
         });
     });
 
-var passdetail={
-	"onwardBookingPassengerRecord": {
-		"bookingId": null,
-		"passengers": [
-		               
-		]
-	},
-	"returnBookingPassengerRecord": {
-		"bookingId": null,
-		"passengers": [
-			
-		]
+	var passdetail={
+		"onwardBookingPassengerRecord": {
+			"bookingId": null,
+			"passengers": [
+			               
+			]
+		},
+		"returnBookingPassengerRecord": {
+			"bookingId": null,
+			"passengers": [
+				
+			]
+		}
 	}
-}
-
-
 
     $('#proceed-pay').on('click', function(event) {
     	var pass={"name":null,"gender":null,"age":null};
@@ -157,6 +156,9 @@ var passdetail={
             processData: false,
             data: JSON.stringify(passdetail),
             contentType: 'application/json',
+            headers: {
+            	"X-AUTH-TOKEN":localStorage.getItem("X-AUTH-TOKEN")
+            },
             success: function(data, textStatus, jqXHR) {
                 
             },
@@ -165,4 +167,26 @@ var passdetail={
             }
         });
     });
+
+	$('#login').on('click', function(event) {
+		console.log("invoke authentication API");
+		var email = $('#email').val();
+		var password = $('#password').val();
+		$.ajax({
+            url: 'auth' + '?email=' + email + '&password=' + password,
+            type: 'POST',
+            cache: false,
+            processData: false,
+            contentType: 'application/json',
+            success: function(data, textStatus, jqXHR) {
+            	$('#loginpanel').attr("hidden", "hidden");
+                $('#searchpanel').removeAttr("hidden");
+                
+                localStorage.setItem("X-AUTH-TOKEN", jqXHR.getResponseHeader('X-AUTH-TOKEN'));
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                
+            }
+        });
+	});
 });
